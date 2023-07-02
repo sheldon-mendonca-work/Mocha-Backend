@@ -14,7 +14,7 @@ import './models/posts.js';
 
 /* Mongoose connection */
 mongoose.connect(`mongodb+srv://sheldonmendonca1012:${process.env.MONGO_PASSWORD}@cluster0.q7vle77.mongodb.net/mochaDB`);
-
+// mongoose.connect(`mongodb://127.0.0.1:27017/mochaDB`);
 
 const db = mongoose.connection;
 
@@ -26,11 +26,12 @@ db.once('open', ()=>{
 /* app initialization */
 const app = express();
 const port = 3001;
-const router = Router();
+
 /* Express Routing */
 app.use(cors());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+const router = Router();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
@@ -45,6 +46,5 @@ router.get('/', (req, res) => {
 router.get('/api', (req, res) => {
     res.json({"api": "api"});
 })
-
 
 export const handler = serverless(app);

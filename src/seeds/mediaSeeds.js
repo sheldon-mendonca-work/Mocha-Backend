@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import Media from '../models/media.js';
 
 /* Mongoose connection */
-mongoose.connect(`mongodb+srv://sheldon123:${process.env.MONGO_PASSWORD}@cluster0.ymemj0t.mongodb.net/mochaDB`);
+mongoose.connect(`mongodb+srv://sheldonmendonca1012:${process.env.MONGO_PASSWORD}@cluster0.q7vle77.mongodb.net/mochaDB`);
+// mongoose.connect(`mongodb://127.0.0.1:27017/mochaDB`);
 
 const db = mongoose.connection;
 

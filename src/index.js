@@ -13,7 +13,7 @@ import './models/users.js';
 import './models/posts.js';
 
 /* Mongoose connection */
-mongoose.connect(`mongodb+srv://sheldon123:${process.env.MONGO_PASSWORD}@cluster0.ymemj0t.mongodb.net/mochaDB`);
+mongoose.connect(`mongodb+srv://sheldonmendonca1012:${process.env.MONGO_PASSWORD}@cluster0.q7vle77.mongodb.net/mochaDB`);
 
 
 const db = mongoose.connection;

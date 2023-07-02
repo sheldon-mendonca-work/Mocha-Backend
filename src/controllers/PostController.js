@@ -1,10 +1,12 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
 import { requiresAuth } from "./utils/authUtils.js";
 import { v4 as uuid } from "uuid";
 import User from "../models/users.js";
 import Post from "../models/posts.js";
 import { createMediaDocument, deleteMediaDocumentByID } from './utils/CloudinaryFunctions.js'
 
+dotenv.config({path: path.join(path.resolve(), '../../.env')});
 /**
  * All the routes related to post are present here.
  * */

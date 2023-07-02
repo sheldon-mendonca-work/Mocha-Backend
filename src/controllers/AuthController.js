@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import { v4 as uuid } from "uuid";
 import User from "../models/users.js";
 import Post from "../models/posts.js";
@@ -5,7 +7,7 @@ import { requiresAuth } from "./utils/authUtils.js";
 import sign from "jwt-encode";
 import { createMediaDocument, deleteMediaDocumentByID } from './utils/CloudinaryFunctions.js'
 
-
+dotenv.config({path: path.join(path.resolve(), '../../.env')});
 /**
  * All the routes related to Auth are present here.
  * These are Publicly accessible routes.

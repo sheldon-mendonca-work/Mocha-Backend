@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import path from 'path';
 
 
-  dotenv.config({path: path.join(path.resolve(), '../.env')})
+  dotenv.config({path: path.join(path.resolve(), '../../../.env')})
   const defaultMedia = ['b7684540-1a95-4574-b3c2-e65bc2441b68', "44d0636e-7f2e-449d-b216-2ddb33a13f7b", "c79f3a10-e2b9-491b-9dc1-d15a9cfcb747"]
     
   cloudinary.config({
@@ -13,6 +13,8 @@ import path from 'path';
     api_key: process.env.REACT_APP_CLOUDINARY_API_KEY,
     api_secret: process.env.REACT_APP_CLOUDINARY_API_SECRET
   })
+
+  console.log(process.env.REACT_APP_CLOUDINARY_CLOUD_NAME)
 
 export const createMediaDocument = async (media) => {
   

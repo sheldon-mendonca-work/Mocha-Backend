@@ -1,6 +1,9 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
 import jwt_decode from "jwt-decode";
 import User from '../../models/users.js';
+
+dotenv.config({path: path.join(path.resolve(), '../../../.env')})
 
 export const requiresAuth = async function (request) {
   const encodedToken = request.headers.authorization;
@@ -18,4 +21,3 @@ export const requiresAuth = async function (request) {
   return res.status(401).send({ errors: ["The token is invalid. Unauthorized access error."] })
   
 };
-

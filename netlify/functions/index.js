@@ -31,7 +31,7 @@ const app = express();
 const port = 3001;
 /* Express Routing */
 const allowCrossDomain = (req, res, next) => {
-    res.header(`Access-Control-Allow-Origin`, `http://localhost:3000`);
+    res.header(`Access-Control-Allow-Origin`, `*`);
     res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
     res.header(`Access-Control-Allow-Headers`, `Content-Type`);
     next();
@@ -41,6 +41,7 @@ app.use(cors({
     methods: ['GET', 'PUT', "DELETE", "POST"],
     credentials: true
 }));
+app.use(allowCrossDomain)
 const router = Router();
 
 

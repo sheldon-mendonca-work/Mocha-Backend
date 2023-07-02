@@ -12,7 +12,7 @@ import { createMediaDocument, deleteMediaDocumentByID } from './utils/Cloudinary
  * send GET Request at /api/users
  * */
 
-export const getAllUsersHandler = async function () {
+export const getAllUsersHandler = async function (req, res) {
   try {
     const users = await User.find({}).populate({
       path: 'profileImg bannerImg backImgLink',

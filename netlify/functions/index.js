@@ -30,7 +30,11 @@ db.once('open', ()=>{
 const app = express();
 const port = 3001;
 /* Express Routing */
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ['GET', 'PUT', "DELETE", "POST"],
+    credentials: true
+}));
 const router = Router();
 
 

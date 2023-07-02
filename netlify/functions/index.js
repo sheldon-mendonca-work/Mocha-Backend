@@ -30,18 +30,18 @@ db.once('open', ()=>{
 const app = express();
 const port = 3001;
 /* Express Routing */
-const allowCrossDomain = (req, res, next) => {
-    res.header(`Access-Control-Allow-Origin`, `*`);
-    res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
-    res.header(`Access-Control-Allow-Headers`, `Content-Type`);
-    next();
-  };
+// const allowCrossDomain = (req, res, next) => {
+//     res.header(`Access-Control-Allow-Origin`, `*`);
+//     res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
+//     res.header(`Access-Control-Allow-Headers`, `Content-Type, authorization`);
+//     next();
+//   };
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ['GET', 'PUT', "DELETE", "POST"],
     credentials: true
 }));
-app.use(allowCrossDomain)
+// app.use(allowCrossDomain)
 const router = Router();
 
 

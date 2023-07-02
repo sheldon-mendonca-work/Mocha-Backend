@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
 import express, { Router } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import serverless from 'serverless-http';
+import path from 'path';
 
 import { router as authRoutes }  from '../../src/routes/auth.js';
 import { router as postRoutes }  from '../../src/routes/posts.js';
@@ -13,7 +15,9 @@ import '../../src/models/users.js';
 import '../../src/models/posts.js';
 
 /* Mongoose connection */
-mongoose.connect(`mongodb+srv://sheldon123:${process.env.MONGO_PASSWORD}@cluster0.ymemj0t.mongodb.net/mochaDB`);
+dotenv.config({path: path.join(path.resolve(), '../../.env')});
+
+mongoose.connect(`mongodb+srv://sheldonmendonca1012:${process.env.MONGO_PASSWORD}@cluster0.q7vle77.mongodb.net/mochaDB`);
 
 const db = mongoose.connection;
 

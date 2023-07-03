@@ -105,7 +105,16 @@ export const getPostHandler = async function (req, res) {
       })
     )))
     
-    return res.status(200).send({ posts: [...parentPostArray, currentPost, ...childPostArray] });
+    let deliveredPosts = [currentPost];
+    if(parentPostArray.length > 0){
+      deliveredPosts = [...parentPostArray, ...deletePostHandler];
+    }
+
+    if(childPostArray.length > 0){
+      deliveredPosts = [...deliveredPosts, ...childPostArray];
+    }
+    
+    return res.status(200).send({ posts: deliveredPosts });
   } catch (error) { 
     console.log(error)
     return res.status(500).send({ error });

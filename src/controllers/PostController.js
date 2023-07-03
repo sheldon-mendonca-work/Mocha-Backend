@@ -107,7 +107,7 @@ export const getPostHandler = async function (req, res) {
     
     let deliveredPosts = [currentPost];
     if(parentPostArray.length > 0){
-      deliveredPosts = [...parentPostArray, ...deletePostHandler];
+      deliveredPosts = [...parentPostArray, ...deliveredPosts];
     }
 
     if(childPostArray.length > 0){

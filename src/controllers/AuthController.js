@@ -61,7 +61,7 @@ export const signupHandler = async function (req, res) {
     const _id = uuid();
     
     const encodedToken = sign(
-      { _id, username },
+      { _id },
       process.env.REACT_APP_JWT_SECRET
     );
 
@@ -122,7 +122,7 @@ export const emailLoginHandler = async function (req, res) {
     }
     if (password === foundUser.userPassword) {
       const encodedToken = sign(
-        { _id: foundUser._id, username: foundUser.username },
+        { _id: foundUser._id },
         process.env.REACT_APP_JWT_SECRET
       );
       foundUser.token = encodedToken;
@@ -160,7 +160,7 @@ export const phoneLoginHandler = async function (req, res) {
     }
     if (dateOfBirth === foundUser.dateOfBirth) {
       const encodedToken = sign(
-        { _id: foundUser._id, username: foundUser.username },
+        { _id: foundUser._id },
         process.env.REACT_APP_JWT_SECRET
       );
       foundUser.token = encodedToken;
@@ -196,7 +196,7 @@ export const autoLoginHandler = async function (req, res) {
     }
     
     const encodedToken = sign(
-      { _id: foundUser._id, username: foundUser.username },
+      { _id: foundUser._id },
       process.env.REACT_APP_JWT_SECRET
     );
     

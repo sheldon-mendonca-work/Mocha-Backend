@@ -12,8 +12,8 @@ export const requiresAuth = async function (request) {
     process.env.REACT_APP_JWT_SECRET
   );
   if (decodedToken) {
-    const user = await User.findOne({ username: decodedToken.username }).populate({
-      path: 'profileImg bannerImg backImgLink',
+    const user = await User.findOne({ _id: decodedToken._id }).populate({
+      path: 'username displayName profileImg bannerImg backImgLink',
       select: 'name type'
     });
     return user;

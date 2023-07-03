@@ -97,7 +97,7 @@ export const editUserHandler = async function (req, res) {
     }
     const { userData } = req.body;
     
-    if (userData && userData.username && userData._id !== user._id) {
+    if (userData && userData.username.length > 0 && userData._id !== user._id) {
       return res.status(404).send({ errors: ["Username cannot be changed"]});
     }
 

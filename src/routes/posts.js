@@ -8,6 +8,7 @@ import {
     bookmarkPostHandler,
     getUserPostByTypeHandler,
     getPostUserByTypeHandler,
+    getFollowingPostsHandler,
   } from "../controllers/PostController.js";
 
 import express from 'express';
@@ -16,6 +17,7 @@ export const router = express.Router();
 
 // post routes (public)
 router.get("/", getAllpostsHandler.bind(this));
+router.get("/following", getFollowingPostsHandler.bind(this)); //private route
 router.get("/:postId", getPostHandler.bind(this));
 router.get("/:postId/type", getPostUserByTypeHandler.bind(this));
 router.get("/user/:userID/:typeID", getUserPostByTypeHandler.bind(this));

@@ -37,6 +37,50 @@ export const getAllpostsHandler = async function (req, res) {
   
 };
 
+/**
+ * This handler handles gets all posts of user following in the db.
+ * send GET Request at /api/posts/following
+ * */
+
+export const getFollowingPostsHandler = async function (req, res) {
+  try {
+    // const user = await requiresAuth.call(this, req);
+  
+    // if (!user) {
+    //   return res.status(404).send({ errors: [
+    //         "The username you entered is not Registered. Not Found error",
+    //       ]}
+    //   );
+    // }
+
+    const user = await User.findById("23722911-080f-4a3a-82bb-185caad7fb75");
+
+    let followingPosts = [];
+
+    followingPosts = await user.populate({
+      path: 'following',
+      select: 'posts',
+      populate: {
+        path: 'postImgLink user_id',
+        select: 'type name',
+        populate: {
+          path: 'user_id',
+          select: 'username displayName profileImg',
+          populate: {
+            path: 'profileImg',
+            select: 'type name'
+          }
+        }
+      }
+    })
+    
+    return res.status(200).send({ posts: followingPosts });
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+  
+};
+
 
 /**
  * This handler gets current post, parent post and children post by postId in the db.

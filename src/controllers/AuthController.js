@@ -23,13 +23,11 @@ export const checkUsernameHandler = async function (req, res) {
     const { username, password, email, phNo } = req.body;
     const foundUser = email.trim().length > 0 ? await User.findOne({$or: [
       { username: username },
-      { password: password },
       { email: email }
     ]})
     : 
     await User.findOne({$or: [
       { username: username },
-      { password: password },
       { phNo: phNo }
     ]});
     if (foundUser) {

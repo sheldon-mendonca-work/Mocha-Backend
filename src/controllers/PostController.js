@@ -60,14 +60,17 @@ export const getFollowingPostsHandler = async function (req, res) {
       select: 'posts',
       populate: {
         path: 'posts',
-        populate: {
+        populate: [{
           path: 'user_id',
           select: 'username displayName profileImg',
           populate: {
             path: 'profileImg',
             select: 'type name'
           }
-        }
+        }, {
+          path: 'postImgLink',
+          select: 'type name'
+        }]
       }
     })
     

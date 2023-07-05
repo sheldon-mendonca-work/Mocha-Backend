@@ -5,8 +5,9 @@ import { v4 as uuid } from 'uuid';
 import Post from '../models/posts.js';
 import sign from "jwt-encode";
 
+
 /* Mongoose connection */
-mongoose.connect('mongodb://127.0.0.1:27017/mochaDB');
+mongoose.connect(`mongodb+srv://sheldonmendonca1012:${process.env.MONGO_PASSWORD}@cluster0.q7vle77.mongodb.net/mochaDB`);
 
 const db = mongoose.connection;
 
@@ -18,7 +19,7 @@ db.once('open', ()=>{
 const userSeedDB = async() => {
     const newID = "23722911-080f-4a3a-82bb-185caad7fb75";
     const encodedToken = sign(
-        { _id: newID, username: "sheldon_mendonca"},
+        { _id: newID},
         process.env.REACT_APP_JWT_SECRET
       );
     const user1 = new User({
@@ -34,8 +35,6 @@ const userSeedDB = async() => {
       });
 
     await user1.save();
-
-    
 
 }
 

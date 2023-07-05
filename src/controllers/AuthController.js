@@ -54,7 +54,7 @@ export const signupHandler = async function (req, res) {
     // check if username already exists
     const foundUser = await User.findOne({ username: username });
     if (foundUser) {
-      return res.status(422).send({ errors: ["Unprocessable Entity. Username Already Exists."] });
+      return res.status(422).send({ error: "Unprocessable Entity. Username Already Exists." });
     };
     const _id = uuid();
     
@@ -116,7 +116,7 @@ export const emailLoginHandler = async function (req, res) {
       type: 'type name'
     });
     if (!foundUser) {
-      return res.status(404).send({ errors: [ "The email you entered is not Registered. Not Found error" ] });
+      return res.status(404).send({ error:  "The email you entered is not Registered. Not Found error"  });
     }
     if (password === foundUser.userPassword) {
       const encodedToken = sign(
@@ -129,9 +129,9 @@ export const emailLoginHandler = async function (req, res) {
       return res.status(200).send({foundUser, encodedToken});
     }
     return res.status(401).send({
-      errors: [
-        "The credentials you entered are invalid. Unauthorized access error.",
-      ],
+      error: 
+        "The credentials you entered are invalid. Unauthorized access error."
+      ,
     });
   } catch (error) {
     console.log(error)
@@ -154,7 +154,7 @@ export const phoneLoginHandler = async function (req, res) {
       type: 'type name'
     });
     if (!foundUser) {
-      return res.status(404).send({ errors: [ "Phone login Invalid."] });
+      return res.status(404).send({ error:  "Phone login Invalid." });
     }
     if (dateOfBirth === foundUser.dateOfBirth) {
       const encodedToken = sign(
@@ -167,9 +167,8 @@ export const phoneLoginHandler = async function (req, res) {
       return res.status(200).send({foundUser, encodedToken});
     }
     return res.status(401).send({
-      errors: [
+      error: 
         "The credentials you entered are invalid. Unauthorized access error.",
-      ],
     });
   } catch (error) {
     return res.status(500).send({ error });
@@ -190,7 +189,7 @@ export const autoLoginHandler = async function (req, res) {
       type: 'type name'
     });
     if (!foundUser) {
-      return res.status(404).send({ errors: [ "Autologin Invalid."] });
+      return res.status(404).send({ error:  "Autologin Invalid." });
     }
     
     const encodedToken = sign(
@@ -205,9 +204,9 @@ export const autoLoginHandler = async function (req, res) {
       return res.status(200).send({ foundUser, encodedToken }) 
     }
     return res.status(401).send({
-      errors: [
-        "Autologin invalid. Unauthorized access error.",
-      ],
+      error: 
+        "Autologin invalid. Unauthorized access error."
+      ,
     });
   } catch (error) {
     console.log(error)
@@ -227,7 +226,7 @@ export const logoutUserHandler = async function (req, res) {
     const user = await requiresAuth.call(this, req);
 
     if (!user) {
-      return res.status(404).send({ errors: [ "User Invalid."] });
+      return res.status(404).send({ error:  "User Invalid." });
     }
     
     await User.findOneAndUpdate({ _id: user._id }, {token: "", loginAt: ""})
@@ -249,7 +248,7 @@ export const deleteUserHandler = async function (req, res) {
     const oldUser = await requiresAuth.call(this, req);
     
     if (!oldUser) {
-      return res.status(404).send({ errors: [ "User Invalid."] });
+      return res.status(404).send({ error:  "User Invalid." });
     }
     
     const user = await User.findById(oldUser._id).populate({

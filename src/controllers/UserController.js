@@ -40,7 +40,7 @@ export const getUserHandler = async function (req, res) {
       select: 'type name'
     });
     if (!user) {
-      return res.status(404).send({ errors: [ "Cannot find user" ]} );
+      return res.status(404).send({ error: "Cannot find user" } );
     }
     return res.status(200).send({ user });
   } catch (error) {
@@ -68,7 +68,7 @@ export const getUserFollowerListHandler = async function (req, res) {
     })
 
     if (!followUser) {
-      return res.status(404).send({ errors: [ "The username you entered is not Registered. Not Found error" ]} );
+      return res.status(404).send({ error:  "The username you entered is not Registered. Not Found error" } );
     }
 
     const { followers, following } = followUser;
@@ -90,15 +90,15 @@ export const editUserHandler = async function (req, res) {
   try {
     let user = await requiresAuth.call(this, req);
     if (!user) {
-      return res.status(404).send({ errors: [
+      return res.status(404).send({ error:
         "The username you entered is not Registered. Not Found error",
-      ]}
+      }
       );
     }
     const { userData } = req.body;
     
     if (userData && userData.username.length > 0 && userData._id !== user._id) {
-      return res.status(404).send({ errors: ["Username cannot be changed"]});
+      return res.status(404).send({ error: "Username cannot be changed"});
     }
 
     if(userData.profileImg._id === undefined){
@@ -146,7 +146,7 @@ export const getBookmarkPostsHandler = async function (req, res) {
   try {
     const user = await requiresAuth.call(this, req);
     if (!user) {
-      return res.status(404).send({ errors: [ "The username you entered is not Registered. Not Found error" ]} );
+      return res.status(404).send({ error:  "The username you entered is not Registered. Not Found error" } );
     }
     return new Response(200, {}, { bookmarks: user.bookmarks });
   } catch (error) {
@@ -165,12 +165,12 @@ export const followUserHandler = async function (req, res) {
     const { followUserId } = req.params;
     const followUser = await User.findById(followUserId);
     if (!user) {
-      return res.status(404).send({ errors: [ "The username you entered is not Registered. Not Found error" ]} );
+      return res.status(404).send({ error:  "The username you entered is not Registered. Not Found error" } );
     }
 
     if (user._id === followUser._id) {
       return res.status(404).send({
-          errors: [
+          error: [
             "You cannot follow yourself"
           ],
         }
@@ -182,7 +182,7 @@ export const followUserHandler = async function (req, res) {
     );
 
     if (isFollowing) {
-      return res.status(400).send({ errors: ["User Already following"] });
+      return res.status(400).send({ error: "User Already following" });
     }
 
     
@@ -217,14 +217,14 @@ export const unfollowUserHandler = async function (req, res) {
     const followUser = await User.findById(followUserId);
 
     if (!user) {
-      return res.status(404).send({ errors: [ "The username you entered is not Registered. Not Found error" ]} );
+      return res.status(404).send({ error:  "The username you entered is not Registered. Not Found error" } );
     }
     
     const isFollowing = user.following.some(
       (currUser) => currUser === followUser._id
     );
     if (!isFollowing) {
-      return res.status(400).send({ errors: ["User already not following"] });
+      return res.status(400).send({ error: "User already not following" });
     }
 
     const updatedUser = await User.findByIdAndUpdate(user._id,
@@ -285,7 +285,7 @@ export const notFollowedHandler = async function (req, res) {
     const user = await requiresAuth.call(this, req);
   
     if (!user) {
-      return res.status(404).send({ errors: [ "The username you entered is not Registered. Not Found error" ]} );
+      return res.status(404).send({ error: "The username you entered is not Registered. Not Found error" } );
     }
     
     let userNotFollowList = [];

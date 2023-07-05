@@ -44,16 +44,14 @@ export const getAllpostsHandler = async function (req, res) {
 
 export const getFollowingPostsHandler = async function (req, res) {
   try {
-    // const user = await requiresAuth.call(this, req);
+    const user = await requiresAuth.call(this, req);
   
-    // if (!user) {
-    //   return res.status(404).send({ errors: [
-    //         "The username you entered is not Registered. Not Found error",
-    //       ]}
-    //   );
-    // }
-
-    const user = await User.findById("23722911-080f-4a3a-82bb-185caad7fb75");
+    if (!user) {
+      return res.status(404).send({ error:
+            "The username you entered is not Registered. Not Found error",
+          }
+      );
+    }
 
     let followingPosts = [];
 
@@ -61,8 +59,7 @@ export const getFollowingPostsHandler = async function (req, res) {
       path: 'following',
       select: 'posts',
       populate: {
-        path: 'postImgLink user_id',
-        select: 'type name',
+        path: 'posts',
         populate: {
           path: 'user_id',
           select: 'username displayName profileImg',
@@ -73,6 +70,10 @@ export const getFollowingPostsHandler = async function (req, res) {
         }
       }
     })
+    
+    followingPosts = followingPosts.following.reduce((acc, {posts}) =>{
+      return [...acc, ...posts]
+    }, [])
     
     return res.status(200).send({ posts: followingPosts });
   } catch (error) {
@@ -108,7 +109,7 @@ export const getPostHandler = async function (req, res) {
     
 
     if (!post) {
-      return res.status(404).send({ errors: [ "Post Not Found."] });
+      return res.status(404).send({ error: "Post Not Found." });
     }
     const currentPost = post;
     
@@ -175,7 +176,7 @@ export const getUserPostByTypeHandler = async function (req, res) {
   try {
     const user = await User.findById(userID);
     if (!user) {
-      return res.status(404).send({ errors: [ "User Not Found."] });
+      return res.status(404).send({ error: "User Not Found." });
     }
     let findArray = [];
     switch (typeID) {
@@ -222,9 +223,9 @@ export const createPostHandler = async function (req, res) {
     const user = await requiresAuth.call(this, req);
   
     if (!user) {
-      return res.status(404).send({ errors: [
+      return res.status(404).send({ error:
             "The username you entered is not Registered. Not Found error",
-          ]}
+          }
       );
     }
     
@@ -269,25 +270,24 @@ export const editPostHandler = async function (req, res) {
   
     if (!user) {
       return res.status(404).send({
-          errors: [
+          error:
             "The username you entered is not Registered. Not Found error",
-          ]
+          
         });
     }
     const postId = req.params.postId;
     let post = await Post.findById(postId);
     if (!post) {
       return res.status(404).send({
-          errors: [
+          error:
             "The post you entered is not valid. Not Found error",
-          ]
+          
         });
     }
 
     if (post.user_id !== user._id) {
-      return res.status(400).send({ errors: ["Cannot edit a Post doesn't belong to the logged in User."] });
+      return res.status(400).send({ error:"Cannot edit a Post doesn't belong to the logged in User." });
     }
-
 
     let { postDec, commonPosts, addedPosts, deletedPosts, parentPost  } = req.body.postData;
 
@@ -321,26 +321,23 @@ export const deletePostHandler = async function (req, res) {
   
     if (!user) {
       return res.status(404).send({
-        errors: [
+        error:
           "The username you entered is not Registered. Not Found error",
-        ]
       });
     };
     const postId = req.params.postId;
     let post = await Post.findById(postId);
     if (!post) {
       return res.status(404).send({
-          errors: [
+          error:
             "The post you entered is not valid. Not Found error",
-          ]
         });
     }
 
     if (post.user_id !== user._id) {
       return res.status(404).send({
-        errors: [
+        error:
           "Cannot delete a Post doesn't belong to the logged in User."
-        ]
       });
     };
     //remove post from users.posts
@@ -405,9 +402,8 @@ export const likePostHandler = async function (req, res) {
   
     if (!user) {
       return res.status(404).send({
-        errors: [
-          "The username you entered is not Registered. Not Found error",
-        ]
+        error:
+          "The username you entered is not Registered. Not Found error"
       });
     }
     const postId = req.params.postId;
@@ -415,9 +411,8 @@ export const likePostHandler = async function (req, res) {
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).send({
-        errors: [
-          "The post you entered is not valid. Not Found error",
-        ]
+        error:
+          "The post you entered is not valid. Not Found error"
       });
     }
 
@@ -467,9 +462,8 @@ export const bookmarkPostHandler = async function (req, res) {
   
     if (!user) {
       return res.status(404).send({
-        errors: [
-          "The username you entered is not Registered. Not Found error",
-        ]
+        error:
+          "The username you entered is not Registered. Not Found error"
       });
     }
     const postId = req.params.postId;
@@ -477,9 +471,8 @@ export const bookmarkPostHandler = async function (req, res) {
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).send({
-        errors: [
-          "The post you entered is not valid. Not Found error",
-        ]
+        error:
+          "The post you entered is not valid. Not Found error"
       });
     }
     let bookmarked = false;
@@ -534,7 +527,7 @@ export const getPostUserByTypeHandler = async function (req, res) {
       }
     });
     if (!post) {
-      return res.status(404).send({ errors: [ "Post Not Found."] });
+      return res.status(404).send({ error: "Post Not Found." });
     }
     
     return res.status(200).send({ likedList: post.likedBy, bookmarkedList: post.bookmarkBy });

@@ -55,7 +55,7 @@ export const getFollowingPostsHandler = async function (req, res) {
 
     let followingPosts = [];
 
-    followingPosts = await user.populate({
+    followingPosts = await user.populate([{
       path: 'following',
       select: 'posts',
       populate: {
@@ -72,11 +72,25 @@ export const getFollowingPostsHandler = async function (req, res) {
           select: 'type name'
         }]
       }
-    })
-    
+    },{
+      path: 'posts',
+      populate: [{
+        path: 'user_id',
+        select: 'username displayName profileImg',
+        populate: {
+          path: 'profileImg',
+          select: 'type name'
+        }
+      }, {
+        path: 'postImgLink',
+        select: 'type name'
+      }]
+    }])
+    const userPosts = followingPosts.posts;
     followingPosts = followingPosts.following.reduce((acc, {posts}) =>{
       return [...acc, ...posts]
     }, [])
+    followingPosts = [ ...userPosts, ...followingPosts];
     
     return res.status(200).send({ posts: followingPosts });
   } catch (error) {

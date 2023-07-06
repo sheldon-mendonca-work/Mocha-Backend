@@ -29,6 +29,10 @@ const UserSchema = new Schema({
     },
     dateOfBirth: Date,
     bio: String,
+    pfUrl: {
+      type: String,
+      default: ''
+    },
     profileImg: {
       type: String,
       ref: 'Media',
